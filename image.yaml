@@ -28,6 +28,16 @@ envs:
       value: "admin"
     - name: "AMQ_ROLE"
       value: "admin"
+    - name: "AMQ_CLUSTERED"
+      value: "false"
+    - name: "AMQ_CLUSTER_USER"
+      value: "cluster_user"
+    - name: "AMQ_CLUSTER_PASSWORD"
+      value: "cluster_password"
+    - name: "AMQ_REPLICATED"
+      value: "true"
+    - name: "AMQ_SLAVE"
+      value: "false"
 
 packages:
     repositories:

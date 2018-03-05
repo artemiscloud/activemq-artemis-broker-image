@@ -9,10 +9,9 @@ export BROKER_IP=`hostname -I | cut -f 1 -d ' '`
 
 
 function configure() {
-    local instanceDir=$1
-    local instanceId=$2
+
     export CONTAINER_ID=$HOSTNAME
-    if [ ! -d "$INSTANCE" ]; then
+    if [ ! -d "BROKER" -o "$AMQ_RESET_CONFIG" = "true" ]; then
         AMQ_ARGS="--user $AMQ_USER --password $AMQ_PASSWORD --role $AMQ_ROLE --name $AMQ_NAME --allow-anonymous --http-host $BROKER_IP --host $BROKER_IP "
         if [ "$AMQ_CLUSTERED" = "true" ]; then
             echo "Broker will be clustered"
@@ -24,6 +23,12 @@ function configure() {
                 AMQ_ARGS="$AMQ_ARGS --slave"
             fi
         fi
+        if [ "$AMQ_RESET_CONFIG" ]; then
+            AMQ_ARGS="$AMQ_ARGS --force"
+        fi
+        if [ "$AMQ_EXTRA_ARGS" ]; then
+            AMQ_ARGS="$AMQ_ARGS $AMQ_EXTRA_ARGS"
+        fi
         echo "Creating Broker with args $AMQ_ARGS"
         $AMQ_HOME/bin/artemis create broker $AMQ_ARGS
     fi
@@ -32,7 +37,7 @@ function configure() {
 
 function runServer() {
   configure
-  echo "Running instance $instanceId"
+  echo "Running Broker"
   exec ~/broker/bin/artemis run
 }
 

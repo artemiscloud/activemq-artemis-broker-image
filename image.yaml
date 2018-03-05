@@ -14,6 +14,7 @@ labels:
 envs:
     - name: "JBOSS_PRODUCT"
       value: "AMQ"
+      description: "The product name"
     - name: "JBOSS_AMQ_VERSION"
       value: "7.1.0.GA"
     - name: "PRODUCT_VERSION"
@@ -37,6 +38,10 @@ envs:
     - name: "AMQ_REPLICATED"
       value: "true"
     - name: "AMQ_SLAVE"
+      value: "false"
+    - name: "AMQ_EXTRA_ARGS"
+      value: ""
+    - name: "AMQ_RESET_CONFIG"
       value: "false"
 
 packages:

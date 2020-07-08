@@ -1,6 +1,13 @@
-# ActiveMQ Artemis broker 2.13.0 container image
+# ActiveMQ Artemis broker container image
 
 # License
 
 See link:LICENSE[LICENSE] file.
 
+# How to build
+
+link:https://docs.cekit.io/en/latest/[Cekit] is used to build the image.
+To build simply run:
+
+cekit build
+ 

@@ -9,5 +9,5 @@ See link:LICENSE[LICENSE] file.
 link:https://docs.cekit.io/en/latest/[Cekit] is used to build the image.
 To build simply run:
 
-cekit build
+cekit build docker
  

@@ -3,54 +3,70 @@ schema_version: 1
 name: "artemiscloud/activemq-artemis-broker"
 description: "ActiveMQ Artemis broker container image"
 version: "0.1.0"
-from: "registry.access.redhat.com/ubi7/ubi:7.8-383"
+from: "registry.access.redhat.com/ubi7/ubi-minimal:latest"
 labels:
-    - name: "io.k8s.display-name"
-      value: "ActiveMQ Artemis Broker"
-    - name: "maintainer"
-      value: "rkieley@redhat.com"
+  - name: "io.k8s.display-name"
+    value: "ActiveMQ Artemis Broker"
+  - name: "maintainer"
+    value: "rkieley@redhat.com"
 envs:
-    - name: "AMQ_HOME"
-      value: "/opt/amq"
-    - name: "AMQ_NAME"
-      value: "broker"
-    - name: "AMQ_USER"
-    - name: "AMQ_PASSWORD"
-    - name: "AMQ_ROLE"
-      value: "admin"
-    - name: "AMQ_CLUSTERED"
-      value: "false"
-    - name: "AMQ_CLUSTER_USER"
-      value: "cluster_user"
-    - name: "AMQ_CLUSTER_PASSWORD"
-      value: "cluster_password"
-    - name: "AMQ_EXTRA_ARGS"
-      value: ""
-    - name: "AMQ_RESET_CONFIG"
-      value: "false"
-
+  - name: "AMQ_NAME"
+    value: "broker"
+  - name: "AMQ_USER"
+    value: "amq_user"
+  - name: "AMQ_PASSWORD"
+    value: "amq_password"
+  - name: "AMQ_ROLE"
+    value: "admin"
+  - name: "AMQ_CLUSTERED"
+    value: "false"
+  - name: "AMQ_CLUSTER_USER"
+    value: "cluster_user"
+  - name: "AMQ_CLUSTER_PASSWORD"
+    value: "cluster_password"
+  - name: "AMQ_EXTRA_ARGS"
+    value: ""
+  - name: "AMQ_RESET_CONFIG"
+    value: "false"
+ports:
+  - value: 8161
+    description: Web server
+  - value: 9404
+    description: JMX
+  - value: 61616
+    description: CORE, AMQP, MQTT, STOMP, HORNETQ, OPENWIRE
+  - value: 5672
+    description: AMQP
+  - value: 1883
+    description: MQTT
+  - value: 5445
+    description: HORNETQ, STOMP
+  - value: 61613
+    description: STOMP
+volumes:
+  - name: "etc"
+    path: "/var/lib/artemis/etc"
+  - name: "data"
+    path: "/var/lib/artemis/data"
+  - name: "tmp"
+    path: "/var/lib/artemis/tmp"
 packages:
-    install:
-        - hostname
-        - libaio
-        - python
-
+  manager: microdnf
+  install:
+    - java-1.8.0-openjdk-headless
+    - hostname
+    - libaio
 modules:
-      repositories:
-          - name: cct_module
-            git:
-                  url: https://github.com/artemiscloud/cct_module.git
-                  ref: 0.38.0-artemiscloud
-          - path: modules
-
-      install:
-          - name: jboss.container.user
-          - name: jboss.container.openjdk.jdk
-            version: "8"
-          - name: activemq.artemis.install
-          - name: activemq.artemis.chown
+  repositories:
+    - path: modules
+  install:
+    - name: activemq.artemis.init
+    - name: activemq.artemis.install
+    - name: activemq.artemis.post
 run:
-      user: 185
-      cmd:
-          - "/opt/amq/bin/launch.sh"
-
+  cmd:
+    - "artemis-instance"
+  entrypoint:
+    - "/launch.sh"
+  user: 185
+  workdir: "/var/lib/artemis"

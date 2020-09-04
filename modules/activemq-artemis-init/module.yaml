@@ -1,0 +1,23 @@
+schema_version: 1
+
+name: activemq.artemis.init
+version: 1.0
+
+execute:
+  - script: configure.sh
+
+envs:
+  - name: "ARTEMIS_USER"
+    value: "artemis"
+  - name: "ARTEMIS_DIR"
+    value: "/opt/artemis"
+  - name: "INSTANCE_DIR"
+    value: "/var/lib/artemis"
+  - name: "ARTEMIS_VERSION"
+    value: "2.15.0"
+  - name: "DISTRIBUTION_PREFIX"
+    value: "apache-artemis"
+packages:
+  install:
+    - unzip
+    - shadow-utils

@@ -2,15 +2,27 @@
 # Installs the AMQ distribution into the filesystem.
 set -e
 
-AMQ_HOME=/opt/amq
 SOURCES_DIR=/tmp/artifacts
 SCRIPT_DIR=$(dirname $0)
-ADDED_DIR=${SCRIPT_DIR}/added
 
-DISTRIBUTION_VERSION="apache-artemis-2.15.0"
+DISTRIBUTION_VERSION="${DISTRIBUTION_PREFIX}-${ARTEMIS_VERSION}"
+DISTRIBUTION_PATH="/opt/${DISTRIBUTION_VERSION}"
 
-unzip -q "$SOURCES_DIR/${DISTRIBUTION_VERSION}-bin.zip"
-mv $DISTRIBUTION_VERSION $AMQ_HOME
+BIN_PACKAGE="${DISTRIBUTION_VERSION}-bin.zip"
+BIN_PATH="${SOURCES_DIR}/${BIN_PACKAGE}"
 
-cp $ADDED_DIR/launch.sh $AMQ_HOME/bin
-chmod 0755 $AMQ_HOME/bin/launch.sh
+unzip -q "${BIN_PATH}" -d /opt
+chmod 755 $DISTRIBUTION_PATH
+
+ln -s $DISTRIBUTION_PATH $ARTEMIS_DIR
+ln -s $ARTEMIS_DIR/bin/artemis /usr/local/bin
+
+# Artemis user
+groupadd -g 185 ${ARTEMIS_USER}
+useradd -u 185 -l -M -g ${ARTEMIS_USER} -s /sbin/nologin ${ARTEMIS_USER}
+
+mkdir -p $INSTANCE_DIR
+chown -R ${ARTEMIS_USER}.${ARTEMIS_USER} $INSTANCE_DIR
+chmod -R ug+srwX $INSTANCE_DIR
+
+cp ${SCRIPT_DIR}/launch.sh /

@@ -1,0 +1,7 @@
+schema_version: 1
+
+name: activemq.artemis.post
+version: 1.0
+
+execute:
+  - script: post.sh

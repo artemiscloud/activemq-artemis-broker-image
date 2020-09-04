@@ -1,17 +1,16 @@
 #!/bin/sh
 
+set -e
+
 if [ "${SCRIPT_DEBUG}" = "true" ] ; then
     set -x
     echo "Script debugging is enabled, allowing bash commands and their arguments to be printed as they are executed"
 fi
 
-export BROKER_IP=`hostname -I | cut -f 1 -d ' '`
-
-
 function configure() {
+    export CONTAINER_ID=`hostname`
+    export BROKER_IP=`hostname -I | cut -f 1 -d ' '`
 
-    export CONTAINER_ID=$HOSTNAME
-    
     if [ ! -d "BROKER" -o "$AMQ_RESET_CONFIG" = "true" ]; then
         AMQ_ARGS="--role $AMQ_ROLE --name $AMQ_NAME --allow-anonymous --http-host $BROKER_IP --host $BROKER_IP "
     	if [ -n "${AMQ_USER}" -a -n "${AMQ_PASSWORD}" ] ; then
@@ -34,17 +33,18 @@ function configure() {
         PRINT_ARGS="${PRINT_ARGS/--cluster-password $AMQ_CLUSTER_PASSWORD/--cluster-password XXXXX}"
         PRINT_ARGS="${PRINT_ARGS/--ssl-key-password $AMQ_KEYSTORE_PASSWORD/--ssl-key-password XXXXX}"
         PRINT_ARGS="${PRINT_ARGS/--ssl-trust-password $AMQ_TRUSTSTORE_PASSWORD/--ssl-trust-password XXXXX}"
+        PRINT_ARGS="${PRINT_ARGS/$INSTANCE_DIR}"
 
         echo "Creating Broker with args $PRINT_ARGS"
-		$AMQ_HOME/bin/artemis create broker $AMQ_ARGS
+		artemis create $AMQ_ARGS $INSTANCE_DIR
     fi
-
 }
 
-function runServer() {
-  configure
-  echo "Running Broker"
-  exec ~/broker/bin/artemis run
-}
+configure
 
-runServer
+if [ "$1" = 'artemis-instance' ]; then
+  echo "Running Broker ..."
+  exec $INSTANCE_DIR/bin/artemis run
+fi
+
+exec "$@"

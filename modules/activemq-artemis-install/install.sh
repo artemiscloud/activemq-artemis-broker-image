@@ -8,7 +8,7 @@ SCRIPT_DIR=$(dirname $0)
 DISTRIBUTION_VERSION="${DISTRIBUTION_PREFIX}-${ARTEMIS_VERSION}"
 DISTRIBUTION_PATH="/opt/${DISTRIBUTION_VERSION}"
 
-BIN_PACKAGE="${DISTRIBUTION_VERSION}-bin.zip"
+BIN_PACKAGE="${DISTRIBUTION_PREFIX}-bin.zip"
 BIN_PATH="${SOURCES_DIR}/${BIN_PACKAGE}"
 
 unzip -q "${BIN_PATH}" -d /opt
@@ -21,7 +21,7 @@ ln -s $ARTEMIS_DIR/bin/artemis /usr/local/bin
 groupadd -g 185 ${ARTEMIS_USER}
 useradd -u 185 -l -M -g ${ARTEMIS_USER} -s /sbin/nologin ${ARTEMIS_USER}
 
-mkdir -p $INSTANCE_DIR
+mkdir -p $INSTANCE_DIR/{etc,data,tmp}
 chown -R ${ARTEMIS_USER}.${ARTEMIS_USER} $INSTANCE_DIR
 chmod -R ug+srwX $INSTANCE_DIR
 

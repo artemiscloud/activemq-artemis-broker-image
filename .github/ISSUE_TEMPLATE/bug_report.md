@@ -12,14 +12,16 @@ A clear and concise description of what the bug is.
 
 **To Reproduce**
 Steps to reproduce the behavior:
+
 1. Get X version of the source
-2. '...'
+1. '...'
 
 **Platform (please complete the following information):**
- - OS: [e.g. Fedora]
- - Version [e.g. 32]
- - CEKit version [e.g. 3.5.0]
- - Container build tool [e.g. podman]
+
+- OS: [e.g. Fedora]
+- Version [e.g. 32]
+- CEKit version [e.g. 3.5.0]
+- Container build tool [e.g. podman]
 
 **Expected behavior**
 Optional, use if not obvious. A clear and concise description of what you expected to happen.

@@ -65,8 +65,8 @@ modules:
     - name: activemq.artemis.post
 run:
   cmd:
-    - "artemis-instance"
+    - "artemis-instance-run"
   entrypoint:
-    - "/launch.sh"
+    - "/entry.sh"
   user: 185
   workdir: "/var/lib/artemis"

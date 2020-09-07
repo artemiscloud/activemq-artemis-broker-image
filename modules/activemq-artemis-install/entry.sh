@@ -38,7 +38,7 @@ configure() {
 
     echo "Creating Broker with args $PRINT_ARGS"
 
-    # shellcheck disable=SC2086 (wanted word splitting command)
+    # shellcheck disable=SC2086
     artemis create ${AMQ_ARGS}
 }
 

@@ -26,6 +26,16 @@ jobs:
       - name: Build the image
         run: cekit --verbose build docker --tag $IMAGE_NAME:latest
 
+      - name: Check the image
+        run: >
+          export CONTAINER_ID=$(docker run --detach --env AMQ_USER=admin --env AMQ_PASSWORD=admin $IMAGE_NAME:latest) &&
+          echo CONTAINER_ID=$CONTAINER_ID && sleep 3 &&
+          export CONTAINER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' $CONTAINER_ID) &&
+          echo CONTAINER_IP=$CONTAINER_IP &&
+          docker cp $CONTAINER_ID:/opt/amq ./ &&
+          ./amq/bin/artemis check queue --name TEST --produce 1000 --browse 1000 --consume 1000 --user admin --password admin --url tcp://$CONTAINER_IP:61616 &&
+          docker kill $CONTAINER_ID
+
       - name: Push the image
         run: >
           docker login --username=${{ secrets.QUAY_USERNAME }} --password=${{ secrets.QUAY_PASSWORD }} quay.io &&

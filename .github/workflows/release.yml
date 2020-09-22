@@ -15,19 +15,19 @@ jobs:
     steps:
       - name: Install prerequisites
         run: >
-          sudo apt-get install gcc libkrb5-dev pass &&
-          sudo pip install docker docker-squash cekit odcs[client]        
+          sudo apt-get install gcc libkrb5-dev &&
+          sudo pip install cekit odcs[client]        
       - name: Checkout the repo
         uses: actions/checkout@v2
 
       - name: Build the image
-        run: "cekit --verbose build docker --tag $IMAGE_NAME:latest"
+        run: "cekit --verbose build podman --tag $IMAGE_NAME:latest"
 
       - name: Push the image
         run: >
           export IMAGE_TAG=${GITHUB_REF#refs/tags/v} &&
-          docker login --username=${{ secrets.QUAY_USERNAME }} --password=${{ secrets.QUAY_PASSWORD }} quay.io &&
-          docker tag $IMAGE_NAME:latest quay.io/${{ secrets.QUAY_NAMESPACE }}/$IMAGE_NAME:$IMAGE_TAG &&
-          docker push quay.io/${{ secrets.QUAY_NAMESPACE }}/$IMAGE_NAME:$IMAGE_TAG &&
-          docker tag $IMAGE_NAME:latest quay.io/${{ secrets.QUAY_NAMESPACE }}/$IMAGE_NAME:latest &&
-          docker push quay.io/${{ secrets.QUAY_NAMESPACE }}/$IMAGE_NAME:latest
+          podman login quay.io --username=${{ secrets.QUAY_USERNAME }} --password-stdin <<< ${{ secrets.QUAY_PASSWORD }} &&
+          podman tag $IMAGE_NAME:latest quay.io/${{ secrets.QUAY_NAMESPACE }}/$IMAGE_NAME:$IMAGE_TAG &&
+          podman push quay.io/${{ secrets.QUAY_NAMESPACE }}/$IMAGE_NAME:$IMAGE_TAG &&
+          podman tag $IMAGE_NAME:latest quay.io/${{ secrets.QUAY_NAMESPACE }}/$IMAGE_NAME:latest &&
+          podman push quay.io/${{ secrets.QUAY_NAMESPACE }}/$IMAGE_NAME:latest

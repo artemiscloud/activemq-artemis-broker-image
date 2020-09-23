@@ -1,0 +1,10 @@
+---
+schema_version: 1
+
+name: microdnf.update
+version: 1.0
+description: "Module updating microdnf and prevent issues with unresolved rpm dependency"
+
+run:
+  cmd:
+    - "microdnf  --setopt=tsflags=nodocs update && microdnf clean all"

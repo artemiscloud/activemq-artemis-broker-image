@@ -53,14 +53,11 @@ volumes:
     path: "/var/lib/artemis/tmp"
 packages:
   manager: microdnf
-  install:
-    - java-1.8.0-openjdk-headless
-    - hostname
-    - libaio
 modules:
   repositories:
     - path: modules
   install:
+    - name: microdnf.update
     - name: activemq.artemis.init
     - name: activemq.artemis.install
     - name: activemq.artemis.post

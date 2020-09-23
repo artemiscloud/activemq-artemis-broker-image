@@ -20,5 +20,8 @@ envs:
     value: "apache-artemis"
 packages:
   install:
+    - java-1.8.0-openjdk-headless
+    - libaio
     - unzip
     - shadow-utils
+    - hostname

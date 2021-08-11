@@ -33,7 +33,7 @@ packages:
     install:
         - hostname
         - libaio
-        - python
+        - python2
 
 modules:
       repositories:

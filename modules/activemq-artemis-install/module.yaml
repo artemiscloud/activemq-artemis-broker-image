@@ -8,6 +8,6 @@ artifacts:
       target: apache-artemis-2.18.0-bin.zip
       url: https://archive.apache.org/dist/activemq/activemq-artemis/2.18.0/apache-artemis-2.18.0-bin.zip
       description: "Apache ActiveMQ Artemis messaging broker"
-      md5: 1e423372e5aacc667867cb9a7eef798d
+      md5: 9608b719928190d09daab548db8496e4
 execute:
     - script: install.sh

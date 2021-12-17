@@ -4,53 +4,54 @@ name: "artemiscloud/activemq-artemis-broker"
 description: "ActiveMQ Artemis broker container image"
 version: "0.1.6"
 from: "registry.access.redhat.com/ubi8:8.5-200"
+
 labels:
-    - name: "io.k8s.display-name"
-      value: "ActiveMQ Artemis Broker"
-    - name: "maintainer"
-      value: "rkieley@redhat.com"
+  - name: "io.k8s.display-name"
+    value: "ActiveMQ Artemis Broker"
+  - name: "maintainer"
+    value: "rkieley@redhat.com"
+
 envs:
-    - name: "AMQ_HOME"
-      value: "/opt/amq"
-    - name: "AMQ_NAME"
-      value: "broker"
-    - name: "AMQ_USER"
-    - name: "AMQ_PASSWORD"
-    - name: "AMQ_ROLE"
-      value: "admin"
-    - name: "AMQ_CLUSTERED"
-      value: "false"
-    - name: "AMQ_CLUSTER_USER"
-      value: "cluster_user"
-    - name: "AMQ_CLUSTER_PASSWORD"
-      value: "cluster_password"
-    - name: "AMQ_EXTRA_ARGS"
-      value: ""
-    - name: "AMQ_RESET_CONFIG"
-      value: "false"
+  - name: "AMQ_HOME"
+    value: "/opt/amq"
+  - name: "AMQ_NAME"
+    value: "broker"
+  - name: "AMQ_USER"
+  - name: "AMQ_PASSWORD"
+  - name: "AMQ_ROLE"
+    value: "admin"
+  - name: "AMQ_CLUSTERED"
+    value: "false"
+  - name: "AMQ_CLUSTER_USER"
+    value: "cluster_user"
+  - name: "AMQ_CLUSTER_PASSWORD"
+    value: "cluster_password"
+  - name: "AMQ_EXTRA_ARGS"
+    value: ""
+  - name: "AMQ_RESET_CONFIG"
+    value: "false"
 
 packages:
-    install:
-        - hostname
-        - libaio
-        - python2
+  install:
+    - hostname
+    - libaio
+    - python2
 
 modules:
-      repositories:
-          - name: cct_module
-            git:
-                  url: https://github.com/artemiscloud/cct_module.git
-                  ref: 0.38.0-artemiscloud-1
-          - path: modules
+  repositories:
+    - name: cct_module
+      git:
+        url: https://github.com/artemiscloud/cct_module.git
+        ref: 0.38.0-artemiscloud-1
+    - path: modules
 
-      install:
-          - name: jboss.container.user
-          - name: jboss.container.openjdk.jdk
-            version: "8"
-          - name: activemq.artemis.install
-          - name: activemq.artemis.chown
+  install:
+    - name: jboss.container.user
+    - name: jboss.container.openjdk.jdk
+      version: "8"
+    - name: activemq.artemis.install
+    - name: activemq.artemis.chown
 run:
-      user: 185
-      cmd:
-          - "/opt/amq/bin/launch.sh"
-
+  user: 185
+  cmd:
+    - "/opt/amq/bin/launch.sh"

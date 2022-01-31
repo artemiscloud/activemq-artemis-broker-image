@@ -11,3 +11,6 @@ artifacts:
       md5: 7deac29d9f81471ad674132f4a7bb244
 execute:
     - script: install.sh
+envs:
+    - name: "APACHE_ARTEMIS_VERSION"
+      value: "2.20.0"

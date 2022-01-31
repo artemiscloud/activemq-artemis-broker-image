@@ -39,6 +39,10 @@ function configure() {
 		$AMQ_HOME/bin/artemis create broker $AMQ_ARGS
     fi
 
+    if [ "$AMQ_PROPERTIES" ]; then
+      printf ${AMQ_PROPERTIES//','/'\n'} > $AMQ_NAME/etc/broker.properties
+    fi
+
 }
 
 function runServer() {

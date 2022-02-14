@@ -3,7 +3,7 @@ schema_version: 1
 name: "artemiscloud/activemq-artemis-broker"
 description: "ActiveMQ Artemis broker container image"
 version: "0.1.7"
-from: "registry.access.redhat.com/ubi8:8.5-214"
+from: "registry.access.redhat.com/ubi8/openjdk-17-runtime:1.11-2"
 
 labels:
   - name: "io.k8s.display-name"
@@ -32,6 +32,7 @@ envs:
     value: "false"
 
 packages:
+  manager: microdnf
   install:
     - hostname
     - libaio
@@ -47,8 +48,6 @@ modules:
 
   install:
     - name: jboss.container.user
-    - name: jboss.container.openjdk.jdk
-      version: "11"
     - name: activemq.artemis.install
     - name: activemq.artemis.chown
 run:

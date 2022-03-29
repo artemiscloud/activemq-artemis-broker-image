@@ -1,0 +1,70 @@
+name: Update
+
+env:
+  IMAGE_NAME: activemq-artemis-broker
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version, i.e. 1.0.0'
+        required: false
+        default: ''
+        type: string
+      base_image:
+        description: 'Base image'
+        required: false
+        default: 'latest'
+        type: string
+      activemq_artemis_version:
+        description: 'ActiveMQ Artemis Version, i.e. 2.20.0'
+        required: false
+        default: ''
+        type: string
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Set up the repo
+        run: |
+          git config user.name 'ArtemisCloud Bot'
+          git config user.email 'artemiscloudbot@users.noreply.github.com'
+          git push
+
+      - name: Update version
+        if: ${{ github.event.inputs.version != '' }}
+        run: |
+          sed -i "s~^version:.*~version: \"${{ github.event.inputs.version }}\"~g" image.yaml
+          git commit --all --message "Update version to ${{ github.event.inputs.version }}" || echo "nothing to commit"
+
+      - name: Update base image
+        if: ${{ github.event.inputs.base_image != '' }}
+        run: |
+          if [ "${{ github.event.inputs.base_image }}" = "latest" ]; then
+            BASE_IMAGE="registry.access.redhat.com/ubi8/openjdk-17-runtime@$(skopeo inspect docker://registry.access.redhat.com/ubi8/openjdk-17-runtime:latest | jq -r '.Digest')"
+          else
+            BASE_IMAGE="${{ github.event.inputs.base_image }}"
+          fi
+          sed -i "s~from.*~from: \"${BASE_IMAGE}\"~g" image.yaml
+          git commit --all --message "Update base image to ${BASE_IMAGE}" || echo "nothing to commit"
+
+      - name: Update ActiveMQ Artemis
+        if: ${{ github.event.inputs.activemq_artemis_version != '' }}
+        run: |
+          APACHE_ARTEMIS_BIN_URL="https://archive.apache.org/dist/activemq/activemq-artemis/${{ github.event.inputs.activemq_artemis_version }}/apache-artemis-${{ github.event.inputs.activemq_artemis_version }}-bin.zip"
+          wget -O apache-artemis-bin.zip ${APACHE_ARTEMIS_BIN_URL}
+          sed -i "/APACHE_ARTEMIS_VERSION/{n;s/value:.*/value: \"${{ github.event.inputs.activemq_artemis_version }}\"/}" modules/activemq-artemis-install/module.yaml
+          APACHE_ARTEMIS_BIN_MD5=($(md5sum apache-artemis-bin.zip))
+          PREV_APACHE_ARTEMIS_BIN_URL=$(sed -n '/name: apache-artemis-bin/,$p' modules/activemq-artemis-install/module.yaml | grep -Pom 1 'url:.*')
+          PREV_APACHE_ARTEMIS_BIN_MD5=$(sed -n '/name: apache-artemis-bin/,$p' modules/activemq-artemis-install/module.yaml | grep -Pom 1 'md5:.*')
+          sed -i -e "s~${PREV_APACHE_ARTEMIS_BIN_URL}~url: ${APACHE_ARTEMIS_BIN_URL}~" -e "s~${PREV_APACHE_ARTEMIS_BIN_MD5}~md5: ${APACHE_ARTEMIS_BIN_MD5}~" modules/activemq-artemis-install/module.yaml
+          git commit --all --message "Update ActiveMQ Artemis to ${{ github.event.inputs.activemq_artemis_version }}" || echo "nothing to commit"
+
+      - name: Push commits
+        run: |
+          git push

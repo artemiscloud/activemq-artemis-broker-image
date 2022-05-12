@@ -46,7 +46,7 @@ jobs:
         if: ${{ github.event.inputs.base_image != '' }}
         run: |
           if [ "${{ github.event.inputs.base_image }}" = "latest" ]; then
-            BASE_IMAGE="registry.access.redhat.com/ubi8/openjdk-17-runtime@$(skopeo inspect docker://registry.access.redhat.com/ubi8/openjdk-17-runtime:latest | jq -r '.Digest')"
+            BASE_IMAGE="registry.access.redhat.com/ubi8/openjdk-17@$(skopeo inspect docker://registry.access.redhat.com/ubi8/openjdk-17:latest | jq -r '.Digest')"
           else
             BASE_IMAGE="${{ github.event.inputs.base_image }}"
           fi

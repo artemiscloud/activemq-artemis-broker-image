@@ -15,4 +15,4 @@ cp $ADDED_DIR/launch.sh $AMQ_HOME/bin
 chmod 0755 $AMQ_HOME/bin/launch.sh
 
 # Upgrade packages
-microdnf update -y && rm -rf /var/cache/yum
+microdnf update -y --setopt=install_weak_deps=0 && rm -rf /var/cache/yum

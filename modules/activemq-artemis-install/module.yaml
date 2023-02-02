@@ -6,11 +6,11 @@ version: 1.4
 artifacts:
     - name: apache-artemis-bin
       target: apache-artemis-bin.zip
-      url: https://archive.apache.org/dist/activemq/activemq-artemis/2.27.0/apache-artemis-2.27.0-bin.zip
+      url: https://archive.apache.org/dist/activemq/activemq-artemis/2.27.1/apache-artemis-2.27.1-bin.zip
       description: "Apache ActiveMQ Artemis messaging broker"
-      md5: 060ad8253d0c3796209b750dfbfbb8c1
+      md5: 190db2d9365b51d867511415a5efad9e
 execute:
     - script: install.sh
 envs:
     - name: "APACHE_ARTEMIS_VERSION"
-      value: "2.27.0"
+      value: "2.27.1"

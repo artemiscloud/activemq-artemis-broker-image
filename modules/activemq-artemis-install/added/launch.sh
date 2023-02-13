@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if [ "${SCRIPT_DEBUG}" = "true" ] ; then
     set -x
     echo "Script debugging is enabled, allowing bash commands and their arguments to be printed as they are executed"
@@ -12,7 +14,7 @@ function configure() {
 
     export CONTAINER_ID=$HOSTNAME
     
-    if [ ! -d "BROKER" -o "$AMQ_RESET_CONFIG" = "true" ]; then
+    if [ ! -d "broker" -o "$AMQ_RESET_CONFIG" = "true" ]; then
         AMQ_ARGS="--role $AMQ_ROLE --name $AMQ_NAME --allow-anonymous --http-host $BROKER_IP --host $BROKER_IP "
     	if [ -n "${AMQ_USER}" -a -n "${AMQ_PASSWORD}" ] ; then
 			AMQ_ARGS="--user $AMQ_USER --password $AMQ_PASSWORD $AMQ_ARGS "
@@ -36,7 +38,7 @@ function configure() {
         PRINT_ARGS="${PRINT_ARGS/--ssl-trust-password $AMQ_TRUSTSTORE_PASSWORD/--ssl-trust-password XXXXX}"
 
         echo "Creating Broker with args $PRINT_ARGS"
-		$AMQ_HOME/bin/artemis create broker $AMQ_ARGS
+        $AMQ_HOME/bin/artemis create broker $AMQ_ARGS
     fi
 
 }

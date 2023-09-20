@@ -3,7 +3,7 @@ schema_version: 1
 name: "artemiscloud/activemq-artemis-broker"
 description: "ActiveMQ Artemis broker container image"
 version: "1.0.22"
-from: "registry.access.redhat.com/ubi8/openjdk-17@sha256:8796da64c626c5f63f31a4e3ac0ac3b179333a7c6d5472a195b9b3f61ccd1099"
+from: "registry.access.redhat.com/ubi8/openjdk-17@sha256:7942acf43a41b8fd202de7c5f7745d9732fae00a401b3da06e1ac988ac26ba4d"
 
 labels:
   - name: "io.k8s.display-name"

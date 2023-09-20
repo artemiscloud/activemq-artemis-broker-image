@@ -88,7 +88,7 @@ jobs:
         if: ${{ inputs.update_activemq_artemis_version }}
         run: |
           if [ "${{ inputs.activemq_artemis_version }}" = "latest" ]; then
-            ACTIVEMQ_ARTEMIS_VERSION="$(curl https://activemq.apache.org/components/artemis/documentation/latest/index.html | grep -oP '(?<=Apache ActiveMQ Artemis ).*(?= User Manual)')"
+            ACTIVEMQ_ARTEMIS_VERSION="$(curl https://activemq.apache.org/components/artemis/documentation/latest/index.html | grep -oP '(?<=Apache ActiveMQ Artemis )[0-9]+.[0-9]+.[0-9]+')"
           else
             ACTIVEMQ_ARTEMIS_VERSION="${{ inputs.activemq_artemis_version }}"
           fi

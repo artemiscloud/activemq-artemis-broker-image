@@ -31,6 +31,14 @@ envs:
   - name: "AMQ_RESET_CONFIG"
     value: "false"
 
+ports:
+  - value: 1883
+  - value: 5445
+  - value: 5672
+  - value: 8161
+  - value: 61613
+  - value: 61616
+
 packages:
   manager: microdnf
   install:

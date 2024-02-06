@@ -31,9 +31,10 @@ The image special tags are:
 
 - `latest` - points to the image built from the sources of the latest release tag.
 
-- - `dev.DATE.COMMIT_ID` - points to the image built from the sources of the main branch on specific date and commit id, it should be used only for development purposes. ie: `dev.20231106.8dbe9eb`. It expires in 3 months
+- `dev.DATE.COMMIT_ID` - points to the image built from the sources of the main branch on specific date and commit id, it should be used only for development purposes. ie: `dev.20231106.8dbe9eb`. It expires in 3 months
 
 - `dev.latest` - points to the image built from the latest sources of the main branch, it should be used only for development purposes and it is regenerated on each commit on main branch.
 
 - `snapshot` - points to the image built from the latest sources of the main branch and contains the snapshot version of ActiveMQ Artemis
 
+NOTE: Some tags are tied together at some point. We may have the `latest` tag been equal the tag for version `1.0.23` and also equal the tag for `artemis.2.31.2`. The same applies to `dev.latest` tag which will the equal the latest commit tag, ie: `dev.20231110.5cea3ed`

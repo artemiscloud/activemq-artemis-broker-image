@@ -94,7 +94,7 @@ jobs:
           fi
           APACHE_ARTEMIS_BIN_URL="https://archive.apache.org/dist/activemq/activemq-artemis/${ACTIVEMQ_ARTEMIS_VERSION}/apache-artemis-${ACTIVEMQ_ARTEMIS_VERSION}-bin.zip"
           if ! wget -q --method=HEAD ${APACHE_ARTEMIS_BIN_URL}; then
-            APACHE_ARTEMIS_BIN_URL="https://dist.apache.org/repos/dist/dev/activemq/activemq-artemis/${ACTIVEMQ_ARTEMIS_VERSION}/apache-artemis-${ACTIVEMQ_ARTEMIS_VERSION}-bin.zip"
+            APACHE_ARTEMIS_BIN_URL="https://www.apache.org/dyn/closer.cgi?filename=activemq/activemq-artemis/${ACTIVEMQ_ARTEMIS_VERSION}/apache-artemis-${ACTIVEMQ_ARTEMIS_VERSION}-bin.zip&action=download"
           fi
           wget -O apache-artemis-bin.zip ${APACHE_ARTEMIS_BIN_URL}
           sed -i "/APACHE_ARTEMIS_VERSION/{n;s/value:.*/value: \"${ACTIVEMQ_ARTEMIS_VERSION}\"/}" modules/activemq-artemis-install/module.yaml

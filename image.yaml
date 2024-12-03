@@ -44,7 +44,6 @@ packages:
   install:
     - hostname
     - libaio
-    - python3
 
 modules:
   repositories:
